@@ -16,17 +16,11 @@
 
 # COMMAND ----------
 
-# DBTITLE 1,Install Lakehoue Monitoring Client Wheel
-# MAGIC %pip install "databricks-sdk>=0.28.0"
+# DBTITLE 1,Install Lakehouse Monitoring Client Wheel
+# MAGIC %pip install "databricks-sdk>=0.28.0" --quiet
+# MAGIC dbutils.library.restartPython()
 
 # COMMAND ----------
-
-# This step is necessary to reset the environment with our newly installed wheel.
-dbutils.library.restartPython()
-
-# COMMAND ----------
-
-
 
 spark.conf.set("spark.databricks.sql.analyzeConstraints.enabled", True)
 
@@ -42,7 +36,7 @@ TABLE_NAME = dbutils.widgets.get("table_name")
 # COMMAND ----------
 
 from databricks.sdk import WorkspaceClient
-from databricks.sdk.service.catalog import MonitorTimeSeries, MonitorInfoStatus, MonitorRefreshInfoState, MonitorMetric
+from databricks.sdk.service.catalog import MonitorInfoStatus, MonitorRefreshInfoState
 
 w = WorkspaceClient()
 try:
@@ -73,27 +67,104 @@ if run_info.state != MonitorRefreshInfoState.SUCCESS:
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ## Step 4: Analayze constraint and show results
+# MAGIC ## Step 4: Analyze constraints and show results
 
 # COMMAND ----------
 
 df = spark.sql(f'''ANALYZE CONSTRAINTS FOR {TABLE_NAME}''')
-
-
-# COMMAND ----------
-
-# DBTITLE 1,Shows expectations and the expectation check results
 display(df)
 
 
+from pyspark.sql.functions import collect_list, concat_ws, col
+
+# Collect all constraint expressions where status is "VIOLATED"
+violated_df = df.filter(col("status") == "VIOLATED")
+violated_count = violated_df.count()
+violated_constraints_str = df.filter(col("status") == "VIOLATED") \
+                            .agg(concat_ws(", ", collect_list("constraint_expr")).alias("violated_constraints")) \
+                            .collect()[0]["violated_constraints"]
+
 # COMMAND ----------
 
-from pyspark.sql.functions import col
-# if violated, throw expection
-# Check if any row has "VIOLATED" in the status column
-violated_count = df.filter(col("status") == "VIOLATED").count()
+css = """
+<style>
+.expectations table {
+    width: 50%;
+    border-collapse: collapse;
+    font-size: 18px;
+    margin-top: 10px;
+    table-layout: auto;
+    text-align: left;
+}
+.expectations tbody th, .expectations thead th, .expectations tbody td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+.expectations th {
+    background-color: #f2f2f2;
+}
+.expectations tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+</style>
+"""
+
+html_content = f"""
+<!DOCTYPE html>
+<html>
+<head>
+    {css}
+</head>
+<body class="expectations">
+    <p><b>Debugging Information:</b></p>
+    <ul>
+"""
+# Collect the violated rows
+violated_rows = violated_df.collect()
+
+# Process each violated row
+for row in violated_rows:
+    query = row["debug_sql_query"]
+    constraint = row["constraint_expr"]
+    try:
+        result_df = spark.sql(query).limit(10)
+        if "profile_metrics" in query:
+            result_df = result_df.drop("quantiles")
+        result_html = result_df.toPandas().to_html(index=False, escape=False)
+        
+        # Append the result to the HTML content
+        html_content += f"""
+        <li>
+            The quality expectation <strong><code>{constraint}</code></strong> has failed. Please review the details below:
+            {result_html}
+        </li>
+        """
+    except Exception as e:
+        # Handle any SQL execution errors
+        html_content += f"""
+        <li>
+            The quality expectation <strong><code>{constraint}</code></strong> has failed. Please review the details below:
+            <pre>Error executing query: {str(e)}</pre>
+        </li>
+        """
+
+# Close the HTML tags
+html_content += """
+    </ul>
+</body>
+</html>
+"""
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## Show results
+
+# COMMAND ----------
 
 if violated_count > 0:
-    raise Exception("[EXPECTATION_VIOLATED] Quality violations detected in data. Use debug_sql_query columns from the output dataframe to debug further.")
-
-print("No violated statuses found.")
+  displayHTML(html_content)
+  raise Exception(f"[EXPECTATION_VIOLATED] There are {violated_count} violations detected in the table from the following constraints: {violated_constraints_str}")
+else:
+  print("No violated statuses found.")
