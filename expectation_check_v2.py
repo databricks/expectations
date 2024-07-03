@@ -1,6 +1,6 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC Please reaching out to lakehouse-monitoring-feedback@databricks.com if you face any issues.
+# MAGIC Please reach out to lakehouse-monitoring-feedback@databricks.com if you face any issues.
 # MAGIC
 
 # COMMAND ----------
