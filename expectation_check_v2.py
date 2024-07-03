@@ -1,12 +1,6 @@
 # Databricks notebook source
 # MAGIC %md
-# MAGIC Please reaching out xxx if you face any issues while trying this private preview feature.
-# MAGIC ## Behaviors:
-# MAGIC 1. Table/monitor does not exist: throw `MONITOR_DOES_NOT_EXSIT` error
-# MAGIC 2. Monitor not active: throw `MONITOR_NOT_ACTIVE` error
-# MAGIC 3. Refresh metrics failure: throw `REFRESH_FAILURE`
-# MAGIC 4. Any of the expectation checks fail on the table: throw `DOES_NOT_MEET_EXPECATION` error
-# MAGIC 5. No expectations are configured: pass
+# MAGIC Please reaching out to lakehouse-monitoring-feedback@databricks.com if you face any issues.
 # MAGIC
 
 # COMMAND ----------
