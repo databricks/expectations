@@ -68,6 +68,7 @@ if run_info.state != MonitorRefreshInfoState.SUCCESS:
 df = spark.sql(f'''ANALYZE CONSTRAINTS FOR {TABLE_NAME}''')
 display(df)
 
+# COMMAND ----------
 
 from pyspark.sql.functions import collect_list, concat_ws, col
 
