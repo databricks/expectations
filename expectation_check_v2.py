@@ -126,6 +126,7 @@ for row in violated_rows:
         result_df = spark.sql(query).limit(10)
         if "profile_metrics" in query:
             result_df = result_df.drop("quantiles")
+            result_df = result_df.drop("frequent_items")
         result_html = result_df.toPandas().to_html(index=False, escape=False)
         
         # Append the result to the HTML content
