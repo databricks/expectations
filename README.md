@@ -7,7 +7,7 @@ The software and other materials included in this repo ("Copyrighted Materials")
 ## Step 1: Set up Notebook Task
 you can  create a notebook task to tie quality directly into your Databricks Workflow:
 1. Add a new Task of type `Notebook`
-2. Select notebook source as `Git provider`. Git repository URL: `https://github.com/databricks/expectation`, Git reference: `main`
+2. Select notebook source as `Git provider`. Git repository URL: `https://github.com/databricks/expectations`, Git reference: `main`
 3. Configure path as `expectation_check_v2`
 4. Select DBR 15.2+ cluster in Compute
 5. Add table_name in Parameters. Key: `table_name`, Value: `<three_level_table_name>`
