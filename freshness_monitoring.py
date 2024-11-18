@@ -1,8 +1,11 @@
 # Databricks notebook source
-# install the freshness monitoring wheel
-%pip install "https://ml-team-public-read.s3.us-west-2.amazonaws.com/wheels/data-monitoring/a4050ef7-b183-47a1-a145-e614628e3146/databricks_anomaly_detection-0.0.1-py3-none-any.whl"
+dbutils.widgets.text("whl", "https://ml-team-public-read.s3.us-west-2.amazonaws.com/wheels/data-monitoring/a4050ef7-b183-47a1-a145-e614628e3146/databricks_anomaly_detection-0.0.1-py3-none-any.whl")
+WHL = dbutils.widgets.get("whl")
 
 # COMMAND ----------
+
+# MAGIC %pip install WHL
+# MAGIC
 
 # restart python so library can be installed
 dbutils.library.restartPython()
@@ -21,7 +24,7 @@ SCHEMA_NAME =  dbutils.widgets.get("schema_name")
 
 from databricks.data_monitoring.anomalydetection import FreshnessChecker
 
-# Instantiate the freshness checker (add additioanl parameters to instantiation if customization above was performed)
+# Instantiate the freshness checker (add additional parameters to instantiation if customization above was performed)
 freshness_checker = FreshnessChecker(
   catalog_name=CATALOG_NAME,
   schema_name=SCHEMA_NAME,
