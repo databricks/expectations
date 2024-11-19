@@ -7,6 +7,8 @@ WHL = dbutils.widgets.get("whl")
 # MAGIC %pip install WHL
 # MAGIC
 
+# COMMAND ----------
+
 # restart python so library can be installed
 dbutils.library.restartPython()
 
