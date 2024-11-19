@@ -4,7 +4,7 @@ WHL_URL = dbutils.widgets.get("whl")
 
 # COMMAND ----------
 
-get_ipython().run_line_magic("pip", f"install --force-reinstall --no-deps \"{WHL_URL}\"")
+get_ipython().run_line_magic("pip", f"install \"{WHL_URL}\"")
 
 # COMMAND ----------
 
