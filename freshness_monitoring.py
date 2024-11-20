@@ -16,10 +16,15 @@ dbutils.library.restartPython()
 dbutils.widgets.text("logging_table_name", "my_logging_table")
 dbutils.widgets.text("catalog_name", "my_catalog")
 dbutils.widgets.text("schema_name", "my_schema")
+dbutils.widgets.text("tables_to_skip", "bad_table1, bad_table2")
+
 LOGGING_TABLE_NAME = dbutils.widgets.get("logging_table_name")
 CATALOG_NAME = dbutils.widgets.get("catalog_name")
 SCHEMA_NAME =  dbutils.widgets.get("schema_name")
+TABLES_TO_SKIP = dbutils.widgets.get("tables_to_skip")
 
+# Convert the comma-separated string to a list of strings
+tables_to_skip_list = [table.strip() for table in TABLES_TO_SKIP.split(",")]
 
 # COMMAND ----------
 
@@ -29,7 +34,8 @@ from databricks.data_monitoring.anomalydetection import FreshnessChecker
 freshness_checker = FreshnessChecker(
   catalog_name=CATALOG_NAME,
   schema_name=SCHEMA_NAME,
-  logging_table_name=LOGGING_TABLE_NAME
+  logging_table_name=LOGGING_TABLE_NAME,
+  tables_to_skip=tables_to_skip_list
 )
 
 # COMMAND ----------
