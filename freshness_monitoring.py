@@ -26,8 +26,8 @@ TABLES_TO_SKIP = dbutils.widgets.get("tables_to_skip")
 TABLES_TO_SCAN = dbutils.widgets.get("tables_to_scan")
 
 # Convert the comma-separated string to a list of strings
-tables_to_skip_list = [table.strip() for table in TABLES_TO_SKIP.split(",")]
-tables_to_scan_list = [table.strip() for table in TABLES_TO_SCAN.split(",")]
+tables_to_skip_list = [table.strip() for table in TABLES_TO_SKIP.split(",") if table]
+tables_to_scan_list = [table.strip() for table in TABLES_TO_SCAN.split(",") if table]
 
 # COMMAND ----------
 
