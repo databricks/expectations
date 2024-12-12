@@ -18,7 +18,7 @@ dbutils.widgets.text("catalog_name", "my_catalog")
 dbutils.widgets.text("schema_name", "my_schema")
 dbutils.widgets.text("tables_to_skip", "bad_table1, bad_table2")
 dbutils.widgets.text("tables_to_scan", "")
-dbutils.widgets.text("event_timestamp_col_names", "col1, col2")
+dbutils.widgets.text("event_timestamp_col_names", "")
 
 LOGGING_TABLE_NAME = dbutils.widgets.get("logging_table_name")
 CATALOG_NAME = dbutils.widgets.get("catalog_name")
