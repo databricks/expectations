@@ -18,16 +18,19 @@ dbutils.widgets.text("catalog_name", "my_catalog")
 dbutils.widgets.text("schema_name", "my_schema")
 dbutils.widgets.text("tables_to_skip", "bad_table1, bad_table2")
 dbutils.widgets.text("tables_to_scan", "")
+dbutils.widgets.text("event_timestamp_col_names", "col1, col2")
 
 LOGGING_TABLE_NAME = dbutils.widgets.get("logging_table_name")
 CATALOG_NAME = dbutils.widgets.get("catalog_name")
 SCHEMA_NAME =  dbutils.widgets.get("schema_name")
 TABLES_TO_SKIP = dbutils.widgets.get("tables_to_skip")
 TABLES_TO_SCAN = dbutils.widgets.get("tables_to_scan")
+EVENT_TIMESTAMP_COL_NAMES = dbutils.widgets.get("event_timestamp_col_names")
 
 # Convert the comma-separated string to a list of strings
 tables_to_skip_list = [table.strip() for table in TABLES_TO_SKIP.split(",") if table]
 tables_to_scan_list = [table.strip() for table in TABLES_TO_SCAN.split(",") if table]
+event_timestamp_col_names_list = [col.strip() for col in EVENT_TIMESTAMP_COL_NAMES.split(",") if col]
 
 # COMMAND ----------
 
@@ -39,7 +42,8 @@ freshness_checker = FreshnessChecker(
   schema_name=SCHEMA_NAME,
   logging_table_name=LOGGING_TABLE_NAME,
   tables_to_skip=tables_to_skip_list,
-  tables_to_scan=tables_to_scan_list
+  tables_to_scan=tables_to_scan_list, 
+  event_timestamp_col_names=event_timestamp_col_names_list
 )
 
 # COMMAND ----------
