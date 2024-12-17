@@ -1,5 +1,5 @@
 # Databricks notebook source
-dbutils.widgets.text("whl", "https://ml-team-public-read.s3.us-west-2.amazonaws.com/wheels/data-monitoring/a4050ef7-b183-47a1-a145-e614628e3146/databricks_anomaly_detection-0.0.1-py3-none-any.whl")
+dbutils.widgets.text("whl", "https://ml-team-public-read.s3.us-west-2.amazonaws.com/wheels/data-monitoring/a4050ef7-b183-47a1-a145-e614628e3146/databricks_anomaly_detection-0.0.10-py3-none-any.whl")
 WHL_URL = dbutils.widgets.get("whl")
 
 # COMMAND ----------
