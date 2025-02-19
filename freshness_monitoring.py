@@ -1,6 +1,9 @@
 # Databricks notebook source
-dbutils.widgets.text("whl_override", "https://ml-team-public-read.s3.us-west-2.amazonaws.com/wheels/data-monitoring/a4050ef7-b183-47a1-a145-e614628e3146/databricks_anomaly_detection-0.0.18-py3-none-any.whl")
-WHL_URL = dbutils.widgets.get("whl_override")
+DEFAULT_WHL_URL = "https://ml-team-public-read.s3.us-west-2.amazonaws.com/wheels/data-monitoring/a4050ef7-b183-47a1-a145-e614628e3146/databricks_anomaly_detection-0.0.18-py3-none-any.whl"
+
+dbutils.widgets.text("whl_override", DEFAULT_WHL_URL)
+WHL_URL = dbutils.widgets.get("whl_override").strip() or DEFAULT_WHL_URL
+print(WHL_URL)
 
 # COMMAND ----------
 
