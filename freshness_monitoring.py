@@ -3,7 +3,6 @@ DEFAULT_WHL_URL = "https://ml-team-public-read.s3.us-west-2.amazonaws.com/wheels
 
 dbutils.widgets.text("whl_override", DEFAULT_WHL_URL)
 WHL_URL = dbutils.widgets.get("whl_override").strip() or DEFAULT_WHL_URL
-print(WHL_URL)
 
 # COMMAND ----------
 
