@@ -40,7 +40,7 @@ for config in dict_list:
     elif metric_type == "CompletenessConfig":
         decoded_configs.append(CompletenessConfig.from_dict(config))
     else:
-        decoded_configs.append(MetricConfig.from_dict(config))
+        raise ValueError(f"Unsupported metric_type: {metric_type}")
 
 # COMMAND ----------
 
