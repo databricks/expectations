@@ -15,7 +15,6 @@ dbutils.library.restartPython()
 
 # COMMAND ----------
 
-from datetime import timedelta
 import json
 
 from databricks.data_monitoring.anomalydetection.detection import run_anomaly_detection
@@ -25,7 +24,7 @@ from databricks.data_monitoring.anomalydetection.metric_config import (
 
 dbutils.widgets.text("catalog_name", "my_catalog")
 dbutils.widgets.text("schema_name", "my_schema")
-dbutils.widgets.text("metric_configs", "my_metric_configs")
+dbutils.widgets.text("metric_configs", "[]")
 
 CATALOG_NAME = dbutils.widgets.get("catalog_name")
 SCHEMA_NAME =  dbutils.widgets.get("schema_name")
