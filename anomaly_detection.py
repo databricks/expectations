@@ -19,15 +19,17 @@ import json
 
 from databricks.data_monitoring.anomalydetection.detection import run_anomaly_detection
 from databricks.data_monitoring.anomalydetection.metric_config import (
-    MetricConfig, FreshnessConfig, CompletenessConfig
+    FreshnessConfig, CompletenessConfig
 )
 
 dbutils.widgets.text("catalog_name", "my_catalog")
 dbutils.widgets.text("schema_name", "my_schema")
 dbutils.widgets.text("metric_configs", "[]")
+dbutils.widgets.text("logging_table_name", None)
 
 CATALOG_NAME = dbutils.widgets.get("catalog_name")
 SCHEMA_NAME =  dbutils.widgets.get("schema_name")
+LOGGING_TABLE_NAME = dbutils.widgets.get("logging_table_name")
 
 # Convert metric_configs JSON to objects
 dict_list = json.loads(dbutils.widgets.get("metric_configs"))
@@ -46,7 +48,8 @@ for config in dict_list:
 run_anomaly_detection(
     catalog_name=CATALOG_NAME,
     schema_name=SCHEMA_NAME,
-    metric_configs=decoded_configs
+    metric_configs=decoded_configs,
+    logging_table_name=LOGGING_TABLE_NAME
 )
 
 # COMMAND ----------
