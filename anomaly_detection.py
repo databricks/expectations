@@ -25,7 +25,7 @@ from databricks.data_monitoring.anomalydetection.metric_config import (
 dbutils.widgets.text("catalog_name", "my_catalog")
 dbutils.widgets.text("schema_name", "my_schema")
 dbutils.widgets.text("metric_configs", "[]")
-dbutils.widgets.text("logging_table_name", None)
+dbutils.widgets.text("logging_table_name", "")
 
 CATALOG_NAME = dbutils.widgets.get("catalog_name")
 SCHEMA_NAME =  dbutils.widgets.get("schema_name")
@@ -49,7 +49,7 @@ run_anomaly_detection(
     catalog_name=CATALOG_NAME,
     schema_name=SCHEMA_NAME,
     metric_configs=decoded_configs,
-    logging_table_name=LOGGING_TABLE_NAME
+    logging_table_name=LOGGING_TABLE_NAME if len(LOGGING_TABLE_NAME) > 0 else None
 )
 
 # COMMAND ----------
