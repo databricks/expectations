@@ -45,7 +45,7 @@ for config in dict_list:
 
 # COMMAND ----------
 
-run_anomaly_detection(
+current_run_logging_table = run_anomaly_detection(
     catalog_name=CATALOG_NAME,
     schema_name=SCHEMA_NAME,
     metric_configs=decoded_configs,
@@ -54,5 +54,5 @@ run_anomaly_detection(
 
 # COMMAND ----------
 
-
-
+# Display current run's logging table for all checks enabled
+display(current_run_logging_table)
