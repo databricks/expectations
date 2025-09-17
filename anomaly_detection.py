@@ -54,5 +54,5 @@ current_run_logging_table = run_anomaly_detection(
 
 # COMMAND ----------
 
-# Display current run's logging table for all checks enabled
+# Display current run's logging table for all checks enabled.
 display(current_run_logging_table)
