@@ -1,6 +1,17 @@
 # Databricks notebook source
 DEFAULT_WHL_URL = "https://ml-team-public-read.s3.us-west-2.amazonaws.com/wheels/data-monitoring/a4050ef7-b183-47a1-a145-e614628e3146/databricks_anomaly_detection-0.0.18-py3-none-any.whl"
 
+try:
+  from dbruntime.databricks_repl_context import get_context
+  workspace_id = get_context().workspaceId
+  if workspace_id in [
+    "6051921418418893", # e2 df
+    "7064161269814046", # Azure df
+  ]:
+    DEFAULT_WHL_URL = "https://ml-team-public-read.s3.us-west-2.amazonaws.com/wheels/data-monitoring/staging/databricks_anomaly_detection-0.0.18-py3-none-any.whl"
+except Exception as e:
+  print("Error while aquiring workspace id: {e}")
+
 dbutils.widgets.text("whl_override", DEFAULT_WHL_URL)
 WHL_URL = dbutils.widgets.get("whl_override").strip() or DEFAULT_WHL_URL
 
