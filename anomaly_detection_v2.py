@@ -5,10 +5,8 @@ try:
   from dbruntime.databricks_repl_context import get_context
   workspace_id = get_context().workspaceId
   if workspace_id in [
-    "6051921418418893", # e2
-    "5206439413157315",  # field eng demo workspace
-    "984752964297111",  # field-eng workspace
-    "2548836972759138", # clf
+    "6051921418418893", # e2 df
+    "7064161269814046", # Azure df
   ]:
     DEFAULT_WHL_URL = "https://ml-team-public-read.s3.us-west-2.amazonaws.com/wheels/data-monitoring/staging/databricks_anomaly_detection-0.0.18-py3-none-any.whl"
 except Exception as e:
